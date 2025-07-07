@@ -392,12 +392,12 @@ class ExportManager {
         let previewHtml = '';
         
         if (this.exportConfig.pdf.includeMetadata) {
-            previewHtml += `
-                <div style="text-align: center; margin-bottom: 2rem; border-bottom: 1px solid ${textColor === '#000000' ? '#ccc' : '#555'}; padding-bottom: 1rem;">
-                    <h1 style="color: ${textColor}; margin-bottom: 0.5rem;">${title}</h1>
-                    <p style="color: ${textColor}; opacity: 0.7; font-style: italic;">Exportado em ${date}</p>
-                </div>
-            `;
+            // previewHtml += `
+            //     <div style="text-align: center; margin-bottom: 2rem; border-bottom: 1px solid ${textColor === '#000000' ? '#ccc' : '#555'}; padding-bottom: 1rem;">
+            //         <h1 style="color: ${textColor}; margin-bottom: 0.5rem;">${title}</h1>
+            //         <p style="color: ${textColor}; opacity: 0.7; font-style: italic;">Exportado em ${date}</p>
+            //     </div>
+            // `;
         }
         
         previewHtml += content;
@@ -794,13 +794,13 @@ class ExportManager {
         
         let content = this.currentDocument.content || '<p>Documento vazio</p>';
         if (this.exportConfig.pdf.includeMetadata) {
-            content = `
-                <div class="pdf-header">
-                    <h1>${title}</h1>
-                    <p style="color: ${textColor === '#000000' ? '#666' : '#b0b0b0'}; font-style: italic;">Exportado em ${date}</p>
-                </div>
-                ${content}
-            `;
+            // content = `
+            //     <div class="pdf-header">
+            //         <h1>${title}</h1>
+            //         <p style="color: ${textColor === '#000000' ? '#666' : '#b0b0b0'}; font-style: italic;">Exportado em ${date}</p>
+            //     </div>
+            //     ${content}
+            // `;
         }
         
         return `<!DOCTYPE html>

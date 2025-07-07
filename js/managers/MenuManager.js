@@ -259,7 +259,7 @@ export class MenuManager {
 
     showNewDocumentPrompt() {
         console.log('showNewDocumentPrompt chamado');
-        const docName = prompt('Digite o nome do novo documento:', `Documento Sem Título`);
+        const docName = prompt('Digite o nome do novo documento:', ``);
         if (docName === null) return;
 
         let category = prompt('Digite a categoria do documento (opcional, ex: Fluxos de Trabalho, Pessoal, Pesquisa):', 'Sem Categoria');

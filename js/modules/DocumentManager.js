@@ -114,10 +114,10 @@ helloWorld();
         let docData;
         try {
             const existing = localStorage.getItem(this.STORAGE_KEY_PREFIX + id);
-            docData = existing ? JSON.parse(existing) : { id: id, name: name || `Documento Sem Título ${Date.now()}` };
+            docData = existing ? JSON.parse(existing) : { id: id, name: name || ` ${Date.now()}` };
         } catch (e) {
             console.error("Erro ao analisar dados de documento existentes:", e);
-            docData = { id: id, name: name || `Documento Sem Título ${Date.now()}` };
+            docData = { id: id, name: name || ` ${Date.now()}` };
         }
         
         docData.content = content;
@@ -185,7 +185,7 @@ helloWorld();
 
     createDocument(name = null, category = 'Sem Categoria', tags = []) {
         const newId = `doc-${Date.now()}`;
-        const newName = name || `Documento Sem Título ${this.getDocumentsList().length + 1}`;
+        const newName = name || ` ${this.getDocumentsList().length + 1}`;
         const initialContent = `<h1>${newName}</h1><p>Comece a escrever seu novo documento aqui...</p>`;
         const createdDate = new Date().toISOString(); // Store creation date
         const docData = {

@@ -77,7 +77,7 @@ class EmailSystem {
 
     prepareEmailData(documentData, recipientEmail, senderMessage, format) {
         const metadata = documentData.metadata || {};
-        const title = metadata.title || 'Documento sem título';
+        const title = metadata.title || '';
         const content = documentData.content || '';
         
         let formattedContent = '';
