@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste URL Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        .test-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background-color: #0056b3;
+        }
+        .url-display {
+            background-color: #2a2a2a;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        .status {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teste do Sistema de URLs</h1>
+    
+    <div class="status">
+        <strong>URL Atual:</strong>
+        <div class="url-display" id="current-url"></div>
+    </div>
+    
+    <div class="status">
+        <strong>Estado:</strong>
+        <div id="current-state"></div>
+    </div>
+    
+    <h2>Testes de Navegação</h2>
+    
+    <button class="test-button" onclick="testDashboard()">Dashboard</button>
+    <button class="test-button" onclick="testDashboardWithCategory()">Dashboard com Categoria</button>
+    <button class="test-button" onclick="testDashboardWithSearch()">Dashboard com Busca</button>
+    <button class="test-button" onclick="testEditor()">Editor</button>
+    <button class="test-button" onclick="testSettings()">Configurações</button>
+    <button class="test-button" onclick="testImport()">Importar</button>
+    
+    <h2>Teste de História</h2>
+    <button class="test-button" onclick="window.history.back()">← Voltar</button>
+    <button class="test-button" onclick="window.history.forward()">Avançar →</button>
+    
+    <script>
+        function updateDisplay() {
+            document.getElementById('current-url').textContent = window.location.href;
+            
+            const url = new URL(window.location);
+            const view = url.searchParams.get('view') || 'dashboard';
+            const doc = url.searchParams.get('doc');
+            const category = url.searchParams.get('category');
+            const search = url.searchParams.get('search');
+            
+            let state = `View: ${view}`;
+            if (doc) state += `, Document: ${doc}`;
+            if (category) state += `, Category: ${category}`;
+            if (search) state += `, Search: ${search}`;
+            
+            document.getElementById('current-state').textContent = state;
+        }
+        
+        function updateURL(view, params = {}) {
+            const url = new URL(window.location);
+            url.searchParams.set('view', view);
+            
+            // Remove parâmetros anteriores
+            url.searchParams.delete('doc');
+            url.searchParams.delete('category');
+            url.searchParams.delete('search');
+            
+            // Adiciona novos parâmetros
+            Object.keys(params).forEach(key => {
+                if (params[key]) {
+                    url.searchParams.set(key, params[key]);
+                }
+            });
+
+            // Atualiza URL sem recarregar
+            window.history.pushState(
+                { view, params }, 
+                '', 
+                url.toString()
+            );
+            
+            updateDisplay();
+        }
+        
+        function testDashboard() {
+            updateURL('dashboard');
+        }
+        
+        function testDashboardWithCategory() {
+            updateURL('dashboard', { category: 'Fluxos de Trabalho' });
+        }
+        
+        function testDashboardWithSearch() {
+            updateURL('dashboard', { search: 'teste' });
+        }
+        
+        function testEditor() {
+            updateURL('editor', { doc: 'test-document-id' });
+        }
+        
+        function testSettings() {
+            updateURL('settings');
+        }
+        
+        function testImport() {
+            updateURL('import');
+        }
+        
+        // Escuta mudanças na URL
+        window.addEventListener('popstate', (event) => {
+            updateDisplay();
+        });
+        
+        // Atualiza display inicial
+        updateDisplay();
+    </script>
+</body>
+</html>
