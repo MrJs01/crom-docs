@@ -10,6 +10,15 @@
     <!-- Custom CSS -->
     <link href="style.css" rel="stylesheet">
     <link rel="icon" href="https://crom.live/wp-content/uploads/2024/11/cropped-WhiteSup-1-32x32.png" type="image/png">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N3481FKQ7L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N3481FKQ7L');
+</script>
 </head>
 
 <body class="bg-dark text-white">

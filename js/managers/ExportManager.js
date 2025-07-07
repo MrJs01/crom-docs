@@ -367,7 +367,7 @@ class ExportManager {
 
     generatePdfPreview(content) {
         const metadata = this.currentDocument.metadata || {};
-        const title = metadata.title || 'Documento sem título';
+        const title = metadata.title || '';
         const date = new Date(metadata.lastModified || Date.now()).toLocaleDateString('pt-BR');
         
         // Determinar cor de fundo baseada no tema
@@ -411,7 +411,7 @@ class ExportManager {
 
     generateDocxPreview(content) {
         const metadata = this.currentDocument.metadata || {};
-        const title = metadata.title || 'Documento sem título';
+        const title = metadata.title || '';
         const fontSize = this.exportConfig.docx.fontSize;
         
         let previewHtml = `<div style="font-size: ${fontSize}pt; font-family: 'Times New Roman', serif;">`;
@@ -439,7 +439,7 @@ class ExportManager {
 
     generateHtmlPreview(content) {
         const metadata = this.currentDocument.metadata || {};
-        const title = metadata.title || 'Documento sem título';
+        const title = metadata.title || '';
         
         // Determinar cor de fundo baseada no tema
         let backgroundColor = '#ffffff';
@@ -492,7 +492,7 @@ class ExportManager {
 
     generateTxtPreview(content) {
         const metadata = this.currentDocument.metadata || {};
-        const title = metadata.title || 'Documento sem título';
+        const title = metadata.title || '';
         
         const textContent = exportUtils.htmlToText(content);
         const txtContent = `${title}\n${'='.repeat(title.length)}\n\n${textContent}`;
@@ -504,7 +504,7 @@ class ExportManager {
 
     generateMarkdownPreview(content) {
         const metadata = this.currentDocument.metadata || {};
-        const title = metadata.title || 'Documento sem título';
+        const title = metadata.title || '';
         
         let markdownContent = `# ${title}\n\n`;
         markdownContent += exportUtils.htmlToMarkdown(content);
