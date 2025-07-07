@@ -11,6 +11,9 @@
   [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple.svg)](https://getbootstrap.com/)
   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 </div>
+<div align="center">
+  <img src="https://crom.live/wp-content/uploads/2025/07/FireShot-Capture-115-Docs-docs.crom_.live_.png" alt="CROM Docs Screenshot" width="800">
+</div>
 
 ---
 
