@@ -23,7 +23,7 @@
 
 <body class="bg-dark text-white">
 
-    <!-- Navbar -->
+    <!-- Navbar Desktop -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="main-navbar">
         <div class="container-fluid">
             <a href="#" class="navbar-brand sidebar-documents-link" id="show-dashboard-link">
@@ -174,7 +174,76 @@
         </div>
     </nav>
 
-    <!-- Sidebar Floating Toggle Button (agora depois do main-layout-container para CSS funcionar) -->
+    <!-- Navbar Mobile (Compacta) -->
+    <nav class="navbar-mobile d-lg-none" id="mobile-navbar">
+        <div class="navbar-mobile-header">
+            <button class="navbar-mobile-menu-toggle" id="mobile-menu-toggle" type="button" aria-label="Menu">
+                <i class="bi bi-list"></i>
+            </button>
+            <span class="navbar-mobile-title">CROM Docs</span>
+            <div class="navbar-mobile-actions">
+                <button class="btn btn-sm btn-outline-light file-menu-options" id="mobile-save-button" type="button">
+                    <i class="bi bi-floppy"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-light" id="mobile-actions-toggle" type="button">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Actions Dropdown -->
+        <div class="navbar-mobile-dropdown d-none" id="mobile-actions-dropdown">
+            <div class="mobile-action-item file-menu-options">
+                <button class="btn btn-link text-light" id="mobile-menu-view-json">
+                    <i class="bi bi-filetype-json me-2"></i>Ver JSON
+                </button>
+            </div>
+            <div class="mobile-action-item">
+                <button class="btn btn-link text-light" id="mobile-menu-tutorial">
+                    <i class="bi bi-question-circle me-2"></i>Tutorial
+                </button>
+            </div>
+            <div class="mobile-action-item file-menu-options">
+                <button class="btn btn-link text-light" id="mobile-menu-export">
+                    <i class="bi bi-file-earmark-arrow-down me-2"></i>Exportar
+                </button>
+            </div>
+            <hr class="dropdown-divider">
+            <div class="mobile-action-item">
+                <div class="form-check form-switch ps-4">
+                    <input class="form-check-input" type="checkbox" id="mobile-auto-save-toggle">
+                    <label class="form-check-label text-light" for="mobile-auto-save-toggle">Auto-Salvar</label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="mobile-sidebar-overlay d-lg-none" id="mobile-sidebar-overlay"></div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav d-lg-none" id="bottom-nav">
+        <button class="bottom-nav-item active" id="bottom-nav-dashboard" data-view="dashboard">
+            <i class="bi bi-house-fill"></i>
+            <span>Início</span>
+        </button>
+        <button class="bottom-nav-item" id="bottom-nav-editor" data-view="editor">
+            <i class="bi bi-pencil-square"></i>
+            <span>Editor</span>
+        </button>
+        <button class="bottom-nav-item" id="bottom-nav-new" data-action="new-document">
+            <i class="bi bi-plus-circle"></i>
+            <span>Novo</span>
+        </button>
+        <button class="bottom-nav-item" id="bottom-nav-import" data-view="import">
+            <i class="bi bi-file-earmark-arrow-up"></i>
+            <span>Importar</span>
+        </button>
+        <button class="bottom-nav-item" id="bottom-nav-settings" data-view="settings">
+            <i class="bi bi-gear"></i>
+            <span>Config</span>
+        </button>
+    </nav>
 
 
     <!-- Main Layout (Sidebar + Content) -->
@@ -698,7 +767,97 @@
 
             <!-- Editor View (Existing Content) -->
             <div id="editor-view" class="document-content-area">
-                <div class="document-toolbar mb-0 p-2 d-flex flex-wrap align-items-center justify-content-start gap-2">
+                <!-- Mobile Toolbar (Simplified) -->
+                <div class="document-toolbar-mobile d-lg-none mb-2 p-2">
+                    <div class="toolbar-mobile-primary d-flex align-items-center justify-content-between mb-2">
+                        <div class="toolbar-mobile-group d-flex gap-1">
+                            <button type="button" class="btn btn-dark btn-mobile" data-command="bold" title="Negrito">
+                                <i class="bi bi-type-bold"></i>
+                            </button>
+                            <button type="button" class="btn btn-dark btn-mobile" data-command="italic" title="Itálico">
+                                <i class="bi bi-type-italic"></i>
+                            </button>
+                            <button type="button" class="btn btn-dark btn-mobile" data-command="underline" title="Sublinhado">
+                                <i class="bi bi-type-underline"></i>
+                            </button>
+                        </div>
+                        <div class="toolbar-mobile-group d-flex gap-1">
+                            <button type="button" class="btn btn-dark btn-mobile" data-command="insertUnorderedList" title="Lista">
+                                <i class="bi bi-list-ul"></i>
+                            </button>
+                            <button type="button" class="btn btn-dark btn-mobile" data-command="insertOrderedList" title="Lista Numerada">
+                                <i class="bi bi-list-ol"></i>
+                            </button>
+                        </div>
+                        <div class="toolbar-mobile-group">
+                            <button type="button" class="btn btn-outline-secondary btn-mobile" id="toolbar-mobile-more" title="Mais opções">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Format Selector -->
+                    <div class="toolbar-mobile-format">
+                        <select class="form-select form-select-sm" id="formatBlockSelectMobile" title="Formato">
+                            <option value="p">Parágrafo</option>
+                            <option value="h1">Título 1</option>
+                            <option value="h2">Título 2</option>
+                            <option value="h3">Título 3</option>
+                            <option value="h4">Título 4</option>
+                            <option value="h5">Título 5</option>
+                            <option value="h6">Título 6</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Mobile Expanded Toolbar (Hidden by default) -->
+                    <div class="toolbar-mobile-expanded d-none mt-2">
+                        <div class="row g-1">
+                            <div class="col-3">
+                                <button type="button" class="btn btn-dark btn-mobile w-100" data-command="strikeThrough" title="Tachado">
+                                    <i class="bi bi-type-strikethrough"></i>
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-dark btn-mobile w-100" data-command="justifyLeft" title="Esquerda">
+                                    <i class="bi bi-text-left"></i>
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-dark btn-mobile w-100" data-command="justifyCenter" title="Centro">
+                                    <i class="bi bi-text-center"></i>
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-dark btn-mobile w-100" data-command="justifyRight" title="Direita">
+                                    <i class="bi bi-text-right"></i>
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-dark btn-mobile w-100" data-command="createLink" title="Link">
+                                    <i class="bi bi-link-45deg"></i>
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-dark btn-mobile w-100" data-command="indent" title="Recuo">
+                                    <i class="bi bi-arrow-right-square"></i>
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-dark btn-mobile w-100" data-command="outdent" title="Recuo">
+                                    <i class="bi bi-arrow-left-square"></i>
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-dark btn-mobile w-100" data-command="removeFormat" title="Limpar">
+                                    <i class="bi bi-eraser"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desktop Toolbar (Existing) -->
+                <div class="document-toolbar d-none d-lg-flex mb-0 p-2 flex-wrap align-items-center justify-content-start gap-2">
                     <!-- Text Formatting -->
                     <button type="button" class="btn btn-dark btn-sm" data-command="bold" title="Negrito"><i
                             class="bi bi-type-bold"></i></button>
@@ -851,7 +1010,8 @@
         </div>
     </div>
 
-    <button id="sidebar-floating-toggle" type="button" title="Mostrar/Ocultar Barra Lateral"
+    <!-- Sidebar Floating Toggle Button (desktop only) -->
+    <button id="sidebar-floating-toggle" class="d-none d-lg-block" type="button" title="Mostrar/Ocultar Barra Lateral"
         aria-label="Alternar barra lateral">
         <i class="bi bi-layout-sidebar"></i>
     </button>

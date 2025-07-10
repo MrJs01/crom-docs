@@ -22,6 +22,7 @@ import { GlobalFunctionManager } from 'managers/GlobalFunctionManager.js';
 import { MenuManager } from 'managers/MenuManager.js';
 import { URLManager } from 'managers/URLManager.js';
 import { LoadingManager } from 'managers/LoadingManager.js';
+import { MobileManager } from 'managers/MobileManager.js';
 
 // Import configuration
 import { CONFIG } from 'config/appConfig.js';
@@ -40,6 +41,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Pequeno delay para mostrar o loading
     await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Inicializar Mobile Manager primeiro (para detectar dispositivo)
+    const mobileManager = new MobileManager();
+    loadingManager.updateProgress(20, 'Configurando interface...');
     
     // Inicializar todos os gerenciadores
     // Inicializar componentes principais
