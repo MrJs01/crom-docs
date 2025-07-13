@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Docs</title>
     <!-- Bootstrap CSS (Dark Theme) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <!-- Custom CSS -->
     <link href="style.css" rel="stylesheet">
     <link rel="icon" href="https://crom.live/wp-content/uploads/2024/11/cropped-WhiteSup-1-32x32.png" type="image/png">
@@ -256,13 +255,13 @@
             </ul>
             <hr class="border-secondary">
             <div class="mt-auto">
-                <a href="#" class="nav-link d-flex align-items-center py-2" id="new-document-link">
+                <a href="#" class="nav-link d-flex align-items-center py-2" id="new-document-link" data-action="new-document">
                     <i class="bi bi-plus-circle me-2"></i> Novo Documento
                 </a>
-                <a href="#" class="nav-link d-flex align-items-center py-2" id="import-document-link">
+                <a href="#" class="nav-link d-flex align-items-center py-2" id="import-document-link" data-view="import">
                     <i class="bi bi-file-earmark-arrow-up me-2"></i> Importar Documento
                 </a>
-                <a href="#" class="nav-link d-flex align-items-center py-2" id="settings-link">
+                <a href="#" class="nav-link d-flex align-items-center py-2" id="settings-link" data-view="settings">
                     <i class="bi bi-gear me-2"></i> Configurações
                 </a>
             </div>
@@ -1056,7 +1055,8 @@
     </div>
 
     <!-- Bootstrap JS (bundle includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+     
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <!-- Bootstrap Icons (optional, but good for Notion-like UI) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -1123,6 +1123,26 @@
             });
             // Atualiza visibilidade ao redimensionar ou mudar manualmente
             window.addEventListener('resize', updateToggleVisibility);
+            
+            // Força aplicação de estilos Bootstrap após carregamento
+            setTimeout(function() {
+                // Força re-aplicação de estilos Bootstrap para elementos dinâmicos
+                const bootstrapElements = document.querySelectorAll('.card, .btn, .form-control, .form-select, .dropdown-menu, .alert, .badge, .nav-link, .modal-content');
+                bootstrapElements.forEach(element => {
+                    // Força re-render do elemento
+                    element.style.display = 'none';
+                    element.offsetHeight; // Trigger reflow
+                    element.style.display = '';
+                });
+                
+                // Força atualização dos estilos do system info card
+                const systemInfoCard = document.getElementById('system-info-card');
+                if (systemInfoCard) {
+                    systemInfoCard.classList.add('bootstrap-processed');
+                }
+                
+                console.log('Estilos Bootstrap forçados após carregamento');
+            }, 1000);
         });
     </script>
 </body>

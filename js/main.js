@@ -5,6 +5,7 @@ import { Editor } from 'modules/Editor.js';
 // Import utils
 import { escapeHtml } from 'utils/escapeHtml.js';
 import { checkSharedMode } from 'utils/sharedView.js';
+import { dynamicElementsHandler } from 'utils/dynamicElementsHandler.js';
 
 // Import systems
 import { TutorialSystem } from 'systems/TutorialSystem.js';
@@ -45,6 +46,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Inicializar Mobile Manager primeiro (para detectar dispositivo)
     const mobileManager = new MobileManager();
     loadingManager.updateProgress(20, 'Configurando interface...');
+    
+    // Inicializar handler de elementos dinâmicos
+    console.log('Inicializando handler de elementos dinâmicos...');
+    // dynamicElementsHandler já está inicializado automaticamente
     
     // Inicializar todos os gerenciadores
     // Inicializar componentes principais
@@ -102,8 +107,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.documentManager = documentManager;
     window.appStateManager = appStateManager;
     window.uiManager = uiManager;
+    window.dynamicElementsHandler = dynamicElementsHandler;
     
     loadingManager.updateProgress(90, 'Finalizando configuração...');
+    
+    // Processar elementos existentes para garantir estilos corretos
+    setTimeout(() => {
+        dynamicElementsHandler.refreshAllElements();
+        console.log('Elementos dinâmicos processados');
+    }, 100);
     
     // Sincronizar toggles de auto-save
     const autoSaveToggle = document.getElementById('auto-save-toggle');

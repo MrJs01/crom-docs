@@ -10,18 +10,47 @@ export class TutorialSystem {
 
     init() {
         this.panel = document.getElementById('tutorial-panel');
+        
+        if (!this.panel) {
+            console.error('Tutorial Panel não encontrado! Verifique se o elemento #tutorial-panel existe no HTML.');
+            return;
+        }
+        
+        console.log('Tutorial System inicializado com sucesso');
         this.setupEventListeners();
         this.loadMinimizedSections();
     }
 
     setupEventListeners() {
-        // Menu Tutorial
+        // Menu Tutorial (Desktop e Mobile)
         const menuTutorial = document.getElementById('menu-tutorial');
+        const mobileMenuTutorial = document.getElementById('mobile-menu-tutorial');
+        
         if (menuTutorial) {
+            console.log('Event listener adicionado ao menu-tutorial');
             menuTutorial.addEventListener('click', (e) => {
                 e.preventDefault();
+                console.log('Menu tutorial clicado (desktop)');
                 this.togglePanel();
             });
+        } else {
+            console.warn('Elemento #menu-tutorial não encontrado');
+        }
+        
+        if (mobileMenuTutorial) {
+            console.log('Event listener adicionado ao mobile-menu-tutorial');
+            mobileMenuTutorial.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Menu tutorial clicado (mobile)');
+                this.togglePanel();
+                // Fechar dropdown mobile
+                const mobileActionsDropdown = document.getElementById('mobile-actions-dropdown');
+                if (mobileActionsDropdown) {
+                    mobileActionsDropdown.classList.add('d-none');
+                }
+            });
+        } else {
+            console.warn('Elemento #mobile-menu-tutorial não encontrado');
         }
 
         // Fechar tutorial
@@ -67,18 +96,27 @@ export class TutorialSystem {
             }
         });
 
-        // Fechar ao clicar fora
+        // Fechar ao clicar fora ou no overlay
         document.addEventListener('click', (e) => {
             if (this.panel && this.panel.classList.contains('active') && 
                 !this.panel.contains(e.target) && 
                 !e.target.closest('#menu-tutorial') &&
-                !e.target.classList.contains('tutorial-help-icon')) {
+                !e.target.closest('#mobile-menu-tutorial') &&
+                !e.target.classList.contains('tutorial-help-icon') &&
+                !e.target.closest('.tutorial-help-icon')) {
                 this.hidePanel();
             }
         });
     }
 
     togglePanel() {
+        if (!this.panel) {
+            console.error('Panel não existe, não é possível fazer toggle');
+            return;
+        }
+        
+        console.log('Toggle panel chamado. Estado atual:', this.panel.classList.contains('active'));
+        
         if (this.panel.classList.contains('active')) {
             this.hidePanel();
         } else {
@@ -87,12 +125,57 @@ export class TutorialSystem {
     }
 
     showPanel(tutorialType = 'general') {
+        if (!this.panel) {
+            console.error('Panel não existe, não é possível exibir');
+            return;
+        }
+        
+        console.log('Exibindo tutorial panel, tipo:', tutorialType);
         this.panel.classList.add('active');
         this.showTutorial(tutorialType);
+        
+        // Adicionar overlay em mobile
+        if (window.innerWidth <= 767.98) {
+            this.createMobileOverlay();
+        }
+        
+        console.log('Panel exibido. Classes:', this.panel.className);
     }
 
     hidePanel() {
+        if (!this.panel) return;
+        
         this.panel.classList.remove('active');
+        
+        // Remover overlay em mobile
+        this.removeMobileOverlay();
+    }
+    
+    createMobileOverlay() {
+        let overlay = document.getElementById('tutorial-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'tutorial-overlay';
+            overlay.className = 'tutorial-overlay';
+            document.body.appendChild(overlay);
+            
+            overlay.addEventListener('click', () => {
+                this.hidePanel();
+            });
+        }
+        overlay.classList.add('active');
+    }
+    
+    removeMobileOverlay() {
+        const overlay = document.getElementById('tutorial-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                if (overlay.parentNode) {
+                    overlay.parentNode.removeChild(overlay);
+                }
+            }, 300);
+        }
     }
 
     showTutorial(type, content = null) {
@@ -223,6 +306,18 @@ export class TutorialSystem {
                         <li>Confirme a importação</li>
                     </ol>
                     <p><strong>Dica:</strong> Você pode editar o JSON antes de importar.</p>
+                    
+                    <h6><i class="bi bi-file-earmark-arrow-up me-2"></i>Importando de Arquivos</h6>
+                    <p>Suporte para múltiplos formatos de arquivo:</p>
+                    <ul>
+                        <li><strong>PDF:</strong> Extrai texto de documentos PDF</li>
+                        <li><strong>Word:</strong> Arquivos .doc e .docx</li>
+                        <li><strong>HTML:</strong> Páginas web e arquivos HTML</li>
+                        <li><strong>Texto:</strong> Arquivos .txt simples</li>
+                        <li><strong>Markdown:</strong> Arquivos .md com formatação</li>
+                        <li><strong>RTF:</strong> Rich Text Format</li>
+                    </ul>
+                    <p><strong>Dica:</strong> Arraste e solte arquivos diretamente na área de importação.</p>
                 `
             },
             'editor-toolbar': {
@@ -258,15 +353,26 @@ export class TutorialSystem {
 
         const tutorial = tutorials[type];
         if (tutorial) {
+            // Garantir que o painel seja exibido
             this.showPanel('specific');
+            
             const specificContent = document.getElementById('tutorial-specific-content');
-            specificContent.innerHTML = tutorial.content;
+            if (specificContent) {
+                specificContent.innerHTML = tutorial.content;
+            }
             
             // Atualiza o título da seção específica
             const specificTitle = document.querySelector('#tutorial-specific h5');
             if (specificTitle) {
                 specificTitle.textContent = tutorial.title;
             }
+            
+            // Scroll para o topo do painel
+            if (this.panel) {
+                this.panel.scrollTop = 0;
+            }
+        } else {
+            console.warn(`Tutorial tipo '${type}' não encontrado`);
         }
     }
 }
